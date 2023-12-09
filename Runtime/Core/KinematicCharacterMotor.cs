@@ -548,11 +548,9 @@ namespace KinematicMovementSystem
 		/// </summary>
 		[NonSerialized]
 		public Quaternion InitialTickRotation;
-		/// <summary>
-		/// Specifies a Rigidbody to stay attached to
-		/// </summary>
+
 		[NonSerialized]
-		public Rigidbody AttachedRigidbodyOverride;
+		Rigidbody AttachedRigidbodyOverride;
 		/// <summary>
 		/// The character's velocity resulting from direct movement
 		/// </summary>
@@ -689,8 +687,22 @@ namespace KinematicMovementSystem
 
 
 
+		/// <summary>
+		/// Specifies a Rigidbody to stay attached to
+		/// </summary>
+		
+		public void AttachTo(Rigidbody parent)
+		{
+			AttachedRigidbodyOverride = parent;
+		}
+		/// <summary>
+		/// Detach from current Rigidbody
+		/// </summary>
+		public void Detach()
+		{
+			AttachedRigidbodyOverride = null;
 
-
+		}
 
 		/// <summary>
 		/// Sets whether or not the capsule collider will detect collisions
