@@ -1,47 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using static KinematicMovementSystem.KinematicCharacterMotor;
 
 namespace KinematicMovementSystem
 {
-	/* 
-
-	CAPSULE:
-
-	- radius
-	- height
-	- center
-
-
-	GROUND:
-
-	- Found Any Ground
-	- Is Stable On Ground
-	- Capsule Normal
-	- Raycast Normal
-	- Capsule Hit Point
-	- Rigidbody/Collider
-
-	- Is On Step
-	- Is On Ledge
-	- Ledge Normal
-	- Ledge Tangent
-
-
-	VELOCITY:
-
-	- Input
-	- Local
-	- Global
-
-	- Late Input
-	- Late Local
-	- Late Global
-
-	*/
-
-
-
 
 
 
@@ -62,7 +26,6 @@ namespace KinematicMovementSystem
 		public Vector3 LedgeFacingDirection;
 		public Vector3 LedgeRightRirection;
 	}
-
 
 	public struct VelocityReport
 	{
@@ -143,7 +106,6 @@ namespace KinematicMovementSystem
 	/// </summary>
 	public struct CharacterGroundingReport
 	{
-
 
 		public bool FoundAnyGround;
 		public bool IsStableOnGround;
@@ -236,18 +198,17 @@ namespace KinematicMovementSystem
 	//[HelpURL("https://www.youtube.com/watch?v=wZR-fQ0Nvq4&t=2316s")]
 	public class KinematicCharacterMotor : MonoBehaviour
 	{
-		[SerializeField] bool _capsuleFoldout = true;
 
+		#region properties
+
+
+		[SerializeField] bool _capsuleFoldout = true;
 #pragma warning disable 0414
-		[Header("Components")]
 		/// <summary>
 		/// The capsule collider of this motor
 		/// </summary>
-		[ReadOnly]
-		[SerializeField]
+		[ReadOnly] [SerializeField]
 		CapsuleCollider _capsule;
-
-		//[Header("Capsule Settings")]
 		/// <summary>
 		/// Radius of the character's capsule
 		/// </summary>
@@ -257,8 +218,7 @@ namespace KinematicMovementSystem
 		/// <summary>
 		/// Radius of the character's capsule
 		/// </summary>
-		public float CapsuleRadius => _capsuleRadius;
-
+		//public float CapsuleRadius => _capsuleRadius;
 		/// <summary>
 		/// Height of the character's capsule
 		/// </summary>
@@ -268,8 +228,7 @@ namespace KinematicMovementSystem
 		/// <summary>
 		/// Height of the character's capsule
 		/// </summary>
-		public float CapsuleHeight => _capsuleHeight;
-
+		//public float CapsuleHeight => _capsuleHeight;
 		/// <summary>
 		/// Local y position of the character's capsule center
 		/// </summary>
@@ -279,8 +238,7 @@ namespace KinematicMovementSystem
 		/// <summary>
 		/// Local y position of the character's capsule center
 		/// </summary>
-		public float CapsuleYOffset => _capsuleYOffset;
-
+		//public float CapsuleYOffset => _capsuleYOffset;
 		/// <summary>
 		/// Physics material of the character's capsule
 		/// </summary>
@@ -289,9 +247,6 @@ namespace KinematicMovementSystem
 #pragma warning disable 0649
 		private PhysicMaterial _capsulePhysicsMaterial;
 #pragma warning restore 0649
-
-
-
 
 
 		[SerializeField] bool _groundingSettingsFoldout = true;
@@ -319,8 +274,6 @@ namespace KinematicMovementSystem
 		public bool DiscreteCollisionEvents = false;
 
 
-
-
 		[SerializeField] bool _stepsFoldout = true;
 		/// <summary>
 		/// Handles properly detecting grounding status on steps, but has a performance cost.
@@ -342,8 +295,6 @@ namespace KinematicMovementSystem
 		/// </summary>    
 		[Tooltip("Minimum length of a step that the character can step on (used in Extra stepping method). Use this to let the character step on steps that are smaller that its radius")]
 		public float MinRequiredStepDepth = 0.1f;
-
-
 
 
 		[SerializeField] bool _ledgeFoldout = true;
@@ -370,8 +321,6 @@ namespace KinematicMovementSystem
 		public float MaxStableDenivelationAngle = 180f;
 
 
-
-
 		[SerializeField] bool _rigidbodyFoldout = true;
 		/// <summary>
 		/// Handles properly being pushed by and standing on PhysicsMovers or dynamic rigidbodies. Also handles pushing dynamic rigidbodies
@@ -392,8 +341,6 @@ namespace KinematicMovementSystem
 		public bool PreserveAttachedRigidbodyMomentum = true;
 
 
-
-
 		[SerializeField] bool _constraintsFoldout = true;
 		/// <summary>
 		/// Determines if the character's movement uses the planar constraint
@@ -405,8 +352,6 @@ namespace KinematicMovementSystem
 		/// </summary>
 		[Tooltip("Defines the plane that the character's movement is constrained on, if HasMovementConstraintPlane is active")]
 		public Vector3 PlanarConstraintAxis = Vector3.forward;
-
-
 
 
 		[SerializeField] bool _otherSettingsFoldout = true;
@@ -436,6 +381,8 @@ namespace KinematicMovementSystem
 		[Tooltip("Sets the remaining movement to zero if exceed max movement iterations")]
 		public bool KillRemainingMovementWhenExceedMaxMovementIterations = true;
 
+		#endregion
+
 
 
 		/// <summary>
@@ -443,9 +390,6 @@ namespace KinematicMovementSystem
 		/// </summary>
 		[System.NonSerialized]
 		CharacterGroundingReport _groundingStatus = new CharacterGroundingReport();
-
-
-
 		/// <summary>
 		/// Contains the previous grounding information
 		/// </summary>
@@ -518,31 +462,40 @@ namespace KinematicMovementSystem
 		/// </summary>
 		public Rigidbody AttachedRigidbody { get { return _attachedRigidbody; } }
 		private Rigidbody _attachedRigidbody;
+
+
+
+
+
 		/// <summary>
 		/// Vector3 from the character transform position to the capsule center
 		/// </summary>
-		public Vector3 CharacterTransformToCapsuleCenter { get { return _characterTransformToCapsuleCenter; } }
+		//public Vector3 CharacterTransformToCapsuleCenter { get { return _characterTransformToCapsuleCenter; } }
 		private Vector3 _characterTransformToCapsuleCenter;
 		/// <summary>
 		/// Vector3 from the character transform position to the capsule bottom
 		/// </summary>
-		public Vector3 CharacterTransformToCapsuleBottom { get { return _characterTransformToCapsuleBottom; } }
+		//public Vector3 CharacterTransformToCapsuleBottom { get { return _characterTransformToCapsuleBottom; } }
 		private Vector3 _characterTransformToCapsuleBottom;
 		/// <summary>
 		/// Vector3 from the character transform position to the capsule top
 		/// </summary>
-		public Vector3 CharacterTransformToCapsuleTop { get { return _characterTransformToCapsuleTop; } }
+		//public Vector3 CharacterTransformToCapsuleTop { get { return _characterTransformToCapsuleTop; } }
 		private Vector3 _characterTransformToCapsuleTop;
 		/// <summary>
 		/// Vector3 from the character transform position to the capsule bottom hemi center
 		/// </summary>
-		public Vector3 CharacterTransformToCapsuleBottomHemi { get { return _characterTransformToCapsuleBottomHemi; } }
+		//public Vector3 CharacterTransformToCapsuleBottomHemi { get { return _characterTransformToCapsuleBottomHemi; } }
 		private Vector3 _characterTransformToCapsuleBottomHemi;
 		/// <summary>
 		/// Vector3 from the character transform position to the capsule top hemi center
 		/// </summary>
-		public Vector3 CharacterTransformToCapsuleTopHemi { get { return _characterTransformToCapsuleTopHemi; } }
+		//public Vector3 CharacterTransformToCapsuleTopHemi { get { return _characterTransformToCapsuleTopHemi; } }
 		private Vector3 _characterTransformToCapsuleTopHemi;
+
+
+
+
 		/// <summary>
 		/// The character's velocity resulting from standing on rigidbodies or PhysicsMover
 		/// </summary>
@@ -612,11 +565,16 @@ namespace KinematicMovementSystem
 		// Private
 
 		/// <summary>
+		/// Contains all necessary information for the Motor's Capsule collider
+		/// </summary>
+		public CapsuleProperties Capsule => _capsuleProperties;
+		CapsuleProperties _capsuleProperties;
+
+		/// <summary>
 		/// Contains the current velocity information
 		/// </summary>
 		public VelocityReport Velocity => _velocityReport;
 		VelocityReport _velocityReport = new VelocityReport();
-
 
 		/// <summary>
 		/// Contains the current grounding information
@@ -678,6 +636,7 @@ namespace KinematicMovementSystem
 		{
 			KinematicSystemManager.EnsureCreation();
 			KinematicSystemManager.RegisterCharacterMotor(this);
+			_capsuleProperties = new CapsuleProperties(this);
 		}
 
 		private void OnDisable()
@@ -708,7 +667,7 @@ namespace KinematicMovementSystem
 				}
 			}
 
-
+			_capsuleProperties = new CapsuleProperties(this);
 
 			SetCapsuleDimensions(_capsuleRadius, _capsuleHeight, _capsuleYOffset);
 		}
@@ -862,28 +821,7 @@ namespace KinematicMovementSystem
 			_attachedRigidbody = state.AttachedRigidbody;
 		}
 
-		/// <summary>
-		/// Resizes capsule. Also caches importand capsule size data
-		/// </summary>
-		/// 
-		public void SetCapsuleDimensions(float radius, float height, float yOffset)
-		{
-			height = Mathf.Max(height, (radius * 2f) + 0.01f); // Safety to prevent invalid capsule geometries
 
-			_capsuleRadius = radius;
-			_capsuleHeight = height;
-			_capsuleYOffset = yOffset;
-
-			_capsule.radius = _capsuleRadius;
-			_capsule.height = Mathf.Clamp(_capsuleHeight, _capsuleRadius * 2f, _capsuleHeight);
-			_capsule.center = new Vector3(0f, _capsuleYOffset, 0f);
-
-			_characterTransformToCapsuleCenter = _capsule.center;
-			_characterTransformToCapsuleBottom = _capsule.center + (-_cachedWorldUp * (_capsule.height * 0.5f));
-			_characterTransformToCapsuleTop = _capsule.center + (_cachedWorldUp * (_capsule.height * 0.5f));
-			_characterTransformToCapsuleBottomHemi = _capsule.center + (-_cachedWorldUp * (_capsule.height * 0.5f)) + (_cachedWorldUp * _capsule.radius);
-			_characterTransformToCapsuleTopHemi = _capsule.center + (_cachedWorldUp * (_capsule.height * 0.5f)) + (-_cachedWorldUp * _capsule.radius);
-		}
 
 		/// <summary>
 		/// Forces the character to unground itself on its next grounding update
@@ -1301,7 +1239,17 @@ namespace KinematicMovementSystem
 			return nbHits;
 		}
 
+		public void SetPositionOnGround(Vector3 position, float probeDistance, bool bypassInterpolation = true)
+		{/*
+			if (Physics.SphereCast(position, Capsule.radius, Vector3.down, out RaycastHit hit, probeDistance, Ground.StableLayers))
+			{
+				Vector3 newPosition = position + Vector3.down * (hit.distance + Capsule.radius);
 
+				SetPosition(newPosition, true);
+
+				//Debug.DrawRay(position, Vector3.down * hit.distance, Color.yellow);
+			}*/
+		}
 
 
 
@@ -1800,9 +1748,6 @@ namespace KinematicMovementSystem
 
 
 
-
-
-
 		/// <summary>
 		/// Handle validating all required values
 		/// </summary>
@@ -1813,6 +1758,7 @@ namespace KinematicMovementSystem
 			_capsule.direction = 1;
 			_capsule.sharedMaterial = _capsulePhysicsMaterial;
 
+			_capsuleProperties = new CapsuleProperties(this);
 			SetCapsuleDimensions(_capsuleRadius, _capsuleHeight, _capsuleYOffset);
 
 			MaxStepHeight = Mathf.Clamp(MaxStepHeight, 0f, Mathf.Infinity);
@@ -1828,6 +1774,29 @@ namespace KinematicMovementSystem
 				Debug.LogError("Character's lossy scale is not (1,1,1). This is not allowed. Make sure the character's transform and all of its parents have a (1,1,1) scale.", this.gameObject);
 			}
 #endif
+		}
+
+		/// <summary>
+		/// Resizes capsule. Also caches importand capsule size data
+		/// </summary>
+		/// 
+		void SetCapsuleDimensions(float radius, float height, float yOffset)
+		{
+			height = Mathf.Max(height, (radius * 2f) + 0.01f); // Safety to prevent invalid capsule geometries
+
+			_capsuleRadius = radius;
+			_capsuleHeight = height;
+			_capsuleYOffset = yOffset;
+
+			_capsule.radius = _capsuleRadius;
+			_capsule.height = Mathf.Clamp(_capsuleHeight, _capsuleRadius * 2f, _capsuleHeight);
+			_capsule.center = new Vector3(0f, _capsuleYOffset, 0f);
+
+			_characterTransformToCapsuleCenter = _capsule.center;
+			_characterTransformToCapsuleBottom = _capsule.center + (-_cachedWorldUp * (_capsule.height * 0.5f));
+			_characterTransformToCapsuleTop = _capsule.center + (_cachedWorldUp * (_capsule.height * 0.5f));
+			_characterTransformToCapsuleBottomHemi = _capsule.center + (-_cachedWorldUp * (_capsule.height * 0.5f)) + (_cachedWorldUp * _capsule.radius);
+			_characterTransformToCapsuleTopHemi = _capsule.center + (_cachedWorldUp * (_capsule.height * 0.5f)) + (-_cachedWorldUp * _capsule.radius);
 		}
 
 		/// <summary>
@@ -2976,26 +2945,108 @@ namespace KinematicMovementSystem
 		{
 			KinematicCharacterMotor _motor;
 
-			public float Radius => _motor._capsuleRadius;
-			public float Height => _motor._capsuleHeight;
-			public float Offset => _motor._capsuleYOffset;
+			/// <summary>
+			/// The radius of the sphere, measured in the object's local space.
+			/// </summary>
+			public float Radius => _motor._capsule.radius;
 
+			/// <summary>
+			/// The height of the capsule measured in the object's local space.
+			/// </summary>
+			public float Height => _motor._capsule.height;
 
+			/// <summary>
+			/// The center of the capsule, measured in the object's local space.
+			/// </summary>
+			public float Offset => _motor._capsule.center.y;
+
+			/// <summary>
+			/// Vector3 from the character transform position to the capsule center
+			/// </summary>
 			public Vector3 LocalCenter => _motor._characterTransformToCapsuleCenter;
+
+			/// <summary>
+			/// Vector3 from the character transform position to the capsule bottom
+			/// </summary>
 			public Vector3 LocalBottom => _motor._characterTransformToCapsuleBottom;
+
+			/// <summary>
+			/// Vector3 from the character transform position to the capsule top
+			/// </summary>
 			public Vector3 LocalTop => _motor._characterTransformToCapsuleTop;
+
+			/// <summary>
+			/// Vector3 from the character transform position to the capsule bottom hemi center
+			/// </summary>
 			public Vector3 LocalBottomHemi => _motor._characterTransformToCapsuleBottomHemi;
+
+			/// <summary>
+			/// Vector3 from the character transform position to the capsule top hemi center
+			/// </summary>
 			public Vector3 LocalTopHemi => _motor._characterTransformToCapsuleTopHemi;
 
+			/// <summary>
+			/// Top of the capsule in World Space.
+			/// </summary>
+			public Vector3 Top => GetTop();
+
+			/// <summary>
+			/// Bottom of the capsule in World Space.
+			/// </summary>
+			public Vector3 Bottom => GetBottom();
+
+			/// <summary>
+			/// Top of the capsule origin in World Space.
+			/// </summary>
+			public Vector3 TopOrigin => GetTopPoint();
+
+			/// <summary>
+			/// Bottom of the capsule origin in World Space.
+			/// </summary>
+			public Vector3 BottomOrigin => GetBottomPoint();
 
 
 
 
+			public Vector3 GetPointOnHeight(float time)
+			{
+				return Vector3.Lerp(Top, Bottom, time);
+			}
+
+
+			/// <summary>
+			/// Resizes capsule. Also caches importand capsule size data
+			/// </summary>
 			public void SetDimensions(float radius, float height, float offset)
 			{
 				_motor.SetCapsuleDimensions(radius, height, offset);
 
 			}
+
+
+
+
+			Vector3 GetTopPoint()
+			{
+				return _motor.Transform.position + _motor.Transform.up * (Offset + (0.5f * Height) - Radius);
+			}
+
+			Vector3 GetBottomPoint()
+			{
+				return _motor.Transform.position + _motor.Transform.up * (Offset - (0.5f * Height) - Radius);
+			}
+
+			Vector3 GetTop()
+			{
+				return _motor.Transform.position + _motor.Transform.up * (Offset + (0.5f * Height));
+			}
+
+			Vector3 GetBottom()
+			{
+				return _motor.Transform.position + _motor.Transform.up * (Offset - (0.5f * Height));
+			}
+
+
 
 
 			public CapsuleProperties(KinematicCharacterMotor motor)
