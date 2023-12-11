@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
-using static KinematicMovementSystem.KinematicCharacterMotor;
 
 namespace KinematicMovementSystem
 {
@@ -196,7 +194,7 @@ namespace KinematicMovementSystem
 	[RequireComponent(typeof(CapsuleCollider))]
 	[AddComponentMenu("Kinematic System/Kinematic Character Motor")]
 	//[HelpURL("https://www.youtube.com/watch?v=wZR-fQ0Nvq4&t=2316s")]
-	public class KinematicCharacterMotor : MonoBehaviour
+	public class CharacterMotor : MonoBehaviour
 	{
 
 		#region properties
@@ -207,7 +205,7 @@ namespace KinematicMovementSystem
 		/// <summary>
 		/// The capsule collider of this motor
 		/// </summary>
-		[ReadOnly] [SerializeField]
+		[SerializeField]
 		CapsuleCollider _capsule;
 		/// <summary>
 		/// Radius of the character's capsule
@@ -2299,7 +2297,7 @@ namespace KinematicMovementSystem
 		{
 			if (_rigidbodyProjectionHitCount < _internalRigidbodyProjectionHits.Length)
 			{
-				if (!hitRigidbody.GetComponent<KinematicCharacterMotor>())
+				if (!hitRigidbody.GetComponent<CharacterMotor>())
 				{
 					RigidbodyProjectionHit rph = new RigidbodyProjectionHit();
 					rph.Rigidbody = hitRigidbody;
@@ -2454,7 +2452,7 @@ namespace KinematicMovementSystem
 						float characterMass = SimulatedCharacterMass;
 						Vector3 characterVelocity = bodyHit.HitVelocity;
 
-						KinematicCharacterMotor hitCharacterMotor = bodyHit.Rigidbody.GetComponent<KinematicCharacterMotor>();
+						CharacterMotor hitCharacterMotor = bodyHit.Rigidbody.GetComponent<CharacterMotor>();
 						bool hitBodyIsCharacter = hitCharacterMotor != null;
 						bool hitBodyIsDynamic = !bodyHit.Rigidbody.isKinematic;
 						float hitBodyMass = bodyHit.Rigidbody.mass;
@@ -2468,7 +2466,7 @@ namespace KinematicMovementSystem
 						}
 						else if (!hitBodyIsDynamic)
 						{
-							PhysicsMover physicsMover = bodyHit.Rigidbody.GetComponent<PhysicsMover>();
+							TerrainMover physicsMover = bodyHit.Rigidbody.GetComponent<TerrainMover>();
 							if(physicsMover)
 							{
 								hitBodyVelocity = physicsMover.Velocity;
@@ -2903,7 +2901,7 @@ namespace KinematicMovementSystem
 				angularVelocity = interactiveRigidbody.angularVelocity;
 				if(interactiveRigidbody.isKinematic)
 				{
-					PhysicsMover physicsMover = interactiveRigidbody.GetComponent<PhysicsMover>();
+					TerrainMover physicsMover = interactiveRigidbody.GetComponent<TerrainMover>();
 					if (physicsMover)
 					{
 						linearVelocity = physicsMover.Velocity;
@@ -2937,7 +2935,7 @@ namespace KinematicMovementSystem
 			Rigidbody colliderAttachedRigidbody = onCollider.attachedRigidbody;
 			if (colliderAttachedRigidbody)
 			{
-				if (colliderAttachedRigidbody.gameObject.GetComponent<PhysicsMover>())
+				if (colliderAttachedRigidbody.gameObject.GetComponent<TerrainMover>())
 				{
 					return colliderAttachedRigidbody;
 				}
@@ -2955,7 +2953,7 @@ namespace KinematicMovementSystem
 		[System.Serializable]
 		public struct CapsuleProperties
 		{
-			KinematicCharacterMotor _motor;
+			CharacterMotor _motor;
 
 			/// <summary>
 			/// The radius of the sphere, measured in the object's local space.
@@ -3061,7 +3059,7 @@ namespace KinematicMovementSystem
 
 
 
-			public CapsuleProperties(KinematicCharacterMotor motor)
+			public CapsuleProperties(CharacterMotor motor)
 			{
 				_motor = motor;
 

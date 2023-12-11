@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace KinematicMovementSystem
@@ -13,8 +12,8 @@ namespace KinematicMovementSystem
     {
         private static KinematicSystemManager _instance;
 
-        public static List<KinematicCharacterMotor> CharacterMotors = new List<KinematicCharacterMotor>();
-        public static List<PhysicsMover> PhysicsMovers = new List<PhysicsMover>();
+        public static List<CharacterMotor> CharacterMotors = new List<CharacterMotor>();
+        public static List<TerrainMover> PhysicsMovers = new List<TerrainMover>();
 
         private static float _lastCustomInterpolationStartTime = -1f;
         private static float _lastCustomInterpolationDeltaTime = -1f;
@@ -65,7 +64,7 @@ namespace KinematicMovementSystem
         /// <summary>
         /// Registers a KinematicCharacterMotor into the system
         /// </summary>
-        public static void RegisterCharacterMotor(KinematicCharacterMotor motor)
+        public static void RegisterCharacterMotor(CharacterMotor motor)
         {
             CharacterMotors.Add(motor);
         }
@@ -73,7 +72,7 @@ namespace KinematicMovementSystem
         /// <summary>
         /// Unregisters a KinematicCharacterMotor from the system
         /// </summary>
-        public static void UnregisterCharacterMotor(KinematicCharacterMotor motor)
+        public static void UnregisterCharacterMotor(CharacterMotor motor)
         {
             CharacterMotors.Remove(motor);
         }
@@ -94,7 +93,7 @@ namespace KinematicMovementSystem
         /// <summary>
         /// Registers a PhysicsMover into the system
         /// </summary>
-        public static void RegisterPhysicsMover(PhysicsMover mover)
+        public static void RegisterPhysicsMover(TerrainMover mover)
         {
             PhysicsMovers.Add(mover);
 
@@ -104,7 +103,7 @@ namespace KinematicMovementSystem
         /// <summary>
         /// Unregisters a PhysicsMover from the system
         /// </summary>
-        public static void UnregisterPhysicsMover(PhysicsMover mover)
+        public static void UnregisterPhysicsMover(TerrainMover mover)
         {
             PhysicsMovers.Remove(mover);
         }
@@ -156,7 +155,7 @@ namespace KinematicMovementSystem
             // Save pre-simulation poses and place transform at transient pose
             for (int i = 0; i < CharacterMotors.Count; i++)
             {
-                KinematicCharacterMotor motor = CharacterMotors[i];
+                CharacterMotor motor = CharacterMotors[i];
 
                 motor.InitialTickPosition = motor.TransientPosition;
                 motor.InitialTickRotation = motor.TransientRotation;
@@ -166,7 +165,7 @@ namespace KinematicMovementSystem
 
             for (int i = 0; i < PhysicsMovers.Count; i++)
             {
-                PhysicsMover mover = PhysicsMovers[i];
+                TerrainMover mover = PhysicsMovers[i];
 
                 mover.InitialTickPosition = mover.TransientPosition;
                 mover.InitialTickRotation = mover.TransientRotation;
@@ -180,7 +179,7 @@ namespace KinematicMovementSystem
         /// <summary>
         /// Ticks characters and/or movers
         /// </summary>
-        public static void Simulate(float deltaTime, List<KinematicCharacterMotor> motors, List<PhysicsMover> movers)
+        public static void Simulate(float deltaTime, List<CharacterMotor> motors, List<TerrainMover> movers)
         {
             int characterMotorsCount = motors.Count;
             int physicsMoversCount = movers.Count;
@@ -201,7 +200,7 @@ namespace KinematicMovementSystem
             // Simulate PhysicsMover displacement
             for (int i = 0; i < physicsMoversCount; i++)
             {
-                PhysicsMover mover = movers[i];
+                TerrainMover mover = movers[i];
 
                 mover.Transform.SetPositionAndRotation(mover.TransientPosition, mover.TransientRotation);
                 mover.Rigidbody.position = mover.TransientPosition;
@@ -211,7 +210,7 @@ namespace KinematicMovementSystem
             // Character controller update phase 2 and move
             for (int i = 0; i < characterMotorsCount; i++)
             {
-                KinematicCharacterMotor motor = motors[i];
+                CharacterMotor motor = motors[i];
 
                 motor.UpdatePhase2(deltaTime);
 
@@ -231,14 +230,14 @@ namespace KinematicMovementSystem
             // Return interpolated roots to their initial poses
             for (int i = 0; i < CharacterMotors.Count; i++)
             {
-                KinematicCharacterMotor motor = CharacterMotors[i];
+                CharacterMotor motor = CharacterMotors[i];
 
                 motor.Transform.SetPositionAndRotation(motor.InitialTickPosition, motor.InitialTickRotation);
             }
 
             for (int i = 0; i < PhysicsMovers.Count; i++)
             {
-                PhysicsMover mover = PhysicsMovers[i];
+                TerrainMover mover = PhysicsMovers[i];
 
                 if (mover.MoveWithPhysics)
                 {
@@ -266,7 +265,7 @@ namespace KinematicMovementSystem
             // Handle characters interpolation
             for (int i = 0; i < CharacterMotors.Count; i++)
             {
-                KinematicCharacterMotor motor = CharacterMotors[i];
+                CharacterMotor motor = CharacterMotors[i];
 
                 motor.Transform.SetPositionAndRotation(
                     Vector3.Lerp(motor.InitialTickPosition, motor.TransientPosition, interpolationFactor),
@@ -276,7 +275,7 @@ namespace KinematicMovementSystem
             // Handle PhysicsMovers interpolation
             for (int i = 0; i < PhysicsMovers.Count; i++)
             {
-                PhysicsMover mover = PhysicsMovers[i];
+                TerrainMover mover = PhysicsMovers[i];
                 
                 mover.Transform.SetPositionAndRotation(
                     Vector3.Lerp(mover.InitialTickPosition, mover.TransientPosition, interpolationFactor),

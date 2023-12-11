@@ -10,7 +10,7 @@ namespace KinematicMovementSystem
     /// Use this to save state or revert to past state
     /// </summary>
     [System.Serializable]
-    public struct PhysicsMoverState
+    public struct TerrainMoverState
     {
         public Vector3 Position;
         public Quaternion Rotation;
@@ -23,9 +23,9 @@ namespace KinematicMovementSystem
     /// proper interaction with characters
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
-	[AddComponentMenu("Kinematic System/Physics Mover")]
+	[AddComponentMenu("Kinematic System/Terrain Mover")]
 
-	public class PhysicsMover : MonoBehaviour
+	public class TerrainMover : MonoBehaviour
     {
         /// <summary>
         /// The mover's Rigidbody
@@ -239,9 +239,9 @@ namespace KinematicMovementSystem
         /// <summary>
         /// Returns all the state information of the mover that is pertinent for simulation
         /// </summary>
-        public PhysicsMoverState GetState()
+        public TerrainMoverState GetState()
         {
-            PhysicsMoverState state = new PhysicsMoverState();
+            TerrainMoverState state = new TerrainMoverState();
 
             state.Position = TransientPosition;
             state.Rotation = TransientRotation;
@@ -254,7 +254,7 @@ namespace KinematicMovementSystem
         /// <summary>
         /// Applies a mover state instantly
         /// </summary>
-        public void ApplyState(PhysicsMoverState state)
+        public void ApplyState(TerrainMoverState state)
         {
             SetPositionAndRotation(state.Position, state.Rotation);
             Velocity = state.Velocity;
