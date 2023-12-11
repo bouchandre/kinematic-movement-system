@@ -7,6 +7,10 @@ namespace KinematicMovementSystem
 
 
 
+
+
+
+
 	public struct GroundReport
 	{
 		public bool FoundAnyGround;
@@ -514,14 +518,8 @@ namespace KinematicMovementSystem
 		/// The motor's assigned controller
 		/// </summary>
 		[NonSerialized]
-		public ICharacterController CharacterController;
+		public ICharacterMotorController CharacterController;
 
-
-		/// <summary>
-		/// The motor's assigned controller extra
-		/// </summary>
-		[NonSerialized]
-		public ICharacterExtra CharacterExtra;
 
 
 
@@ -1298,9 +1296,8 @@ namespace KinematicMovementSystem
 
 
 
-
-			if(CharacterExtra != null)
-			CharacterExtra.BeforeCharacterUpdate(deltaTime);
+			if(CharacterController != null)
+				CharacterController.BeforeCharacterUpdate(deltaTime);
 
 			_velocityReport.LateLocal = _velocityReport.Local;
 			_velocityReport.LateGlobal = _velocityReport.Global;
@@ -1465,8 +1462,8 @@ namespace KinematicMovementSystem
 
 			if (_solveGrounding)
 			{
-				if (CharacterExtra != null)
-					CharacterExtra.PostGroundingUpdate(deltaTime);
+				if (CharacterController != null)
+					CharacterController.PostGroundingUpdate(deltaTime);
 			}
 
 			if (InteractiveRigidbodyHandling)
@@ -1735,12 +1732,12 @@ namespace KinematicMovementSystem
 				int nbOverlaps = CharacterCollisionsOverlap(_transientPosition, _transientRotation, _internalProbedColliders, CollisionOffset * 2f);
 				for (int i = 0; i < nbOverlaps; i++)
 				{
-					if (CharacterExtra != null)
-						CharacterExtra.OnDiscreteCollisionDetected(_internalProbedColliders[i]);
+					if (CharacterController != null)
+						CharacterController.OnDiscreteCollisionDetected(_internalProbedColliders[i]);
 				}
 			}
-			if (CharacterExtra != null)
-				CharacterExtra.AfterCharacterUpdate(deltaTime);
+			if (CharacterController != null)
+				CharacterController.AfterCharacterUpdate(deltaTime);
 
 			//Debug.Log(GroundingStatus.IsStableOnGround);
 
@@ -2602,9 +2599,9 @@ namespace KinematicMovementSystem
 			}
 
 			// Custom checks
-			if (CharacterExtra != null)
+			if (CharacterController != null)
 			{
-				bool colliderValid = CharacterExtra.IsColliderValidForCollisions(coll);
+				bool colliderValid = CharacterController.IsColliderValidForCollisions(coll);
 				if (!colliderValid)
 				{
 					return false;
@@ -2714,8 +2711,8 @@ namespace KinematicMovementSystem
 			// -------------------------------------------------------
 			// CALL HERE
 			// -------------------------------------------------------
-			if (CharacterExtra != null)
-			CharacterExtra.ProcessHitStabilityReport(hitCollider, hitNormal, hitPoint, atCharacterPosition, atCharacterRotation, ref stabilityReport);
+			if (CharacterController != null)
+				CharacterController.ProcessHitStabilityReport(hitCollider, hitNormal, hitPoint, atCharacterPosition, atCharacterRotation, ref stabilityReport);
 		}
 
 		void DetectSteps(Vector3 characterPosition, Quaternion characterRotation, Vector3 hitPoint, Vector3 innerHitDirection, ref HitStabilityReport stabilityReport)
