@@ -1,16 +1,11 @@
 {
     "name": "KinematicMovementSystem.Editor",
-    "rootNamespace": "",
     "references": [
-        "GUID:552292549fec89c4d8dd1f02dce7e183"
+        "KinematicMovementSystem"
     ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+    "includePlatforms": [
+        "Editor"
+    ],
+}
+
 }
