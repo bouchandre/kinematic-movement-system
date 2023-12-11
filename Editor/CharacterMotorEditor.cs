@@ -6,11 +6,11 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using KinematicMovementSystem;
 
-namespace KinematicMovementSystemEditor
+namespace KinematicMovementSystem.Editor
 {
     [CustomEditor(typeof(CharacterMotor))]
 	[CanEditMultipleObjects]
-    public class CharacterMotorEditor : Editor
+    public class CharacterMotorEditor : UnityEditor.Editor
     {
         protected virtual void OnSceneGUI()
         {            /*

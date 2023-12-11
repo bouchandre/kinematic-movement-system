@@ -5,11 +5,21 @@ using UnityEngine;
 
 namespace KinematicMovementSystem
 {
-    /// <summary>
-    /// Represents the entire state of a PhysicsMover that is pertinent for simulation.
-    /// Use this to save state or revert to past state
-    /// </summary>
-    [System.Serializable]
+
+	public interface IMoverController
+	{
+		/// <summary>
+		/// This is called to let you tell the PhysicsMover where it should be right now
+		/// </summary>
+		void UpdateMovement(out Vector3 goalPosition, out Quaternion goalRotation, float deltaTime);
+	}
+
+
+	/// <summary>
+	/// Represents the entire state of a PhysicsMover that is pertinent for simulation.
+	/// Use this to save state or revert to past state
+	/// </summary>
+	[System.Serializable]
     public struct TerrainMoverState
     {
         public Vector3 Position;

@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using KinematicMovementSystem;
 
-namespace KinematicMovementSystemEditor
+namespace KinematicMovementSystem.Editor
 {
 
 	[CustomEditor(typeof(TerrainMover))]
 	[CanEditMultipleObjects]
-	public class TerrainMoverEditor : Editor
+	public class TerrainMoverEditor : UnityEditor.Editor
 	{
 		public override void OnInspectorGUI()
 		{
@@ -21,7 +20,7 @@ namespace KinematicMovementSystemEditor
 
 			serializedObject.ApplyModifiedProperties();
 
-			Editor rbEditor = new Editor();
+			UnityEditor.Editor rbEditor = new UnityEditor.Editor();
 
 			UIExtensions.DrawLine(new Color(1, 1, 1, 0.1f), 1 , 3f, 3f);
 

@@ -1,5 +1,5 @@
 {
-    "name": "KinematicMovementSystemEditor",
+    "name": "KinematicMovementSystem.Editor",
     "rootNamespace": "",
     "references": [
         "GUID:552292549fec89c4d8dd1f02dce7e183"
