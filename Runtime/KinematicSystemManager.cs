@@ -13,8 +13,8 @@ namespace KinematicMovementSystem
     {
         private static KinematicSystemManager _instance;
 
-        public static List<CharacterMotor> CharacterMotors = new List<CharacterMotor>();
-        public static List<TerrainMover> PhysicsMovers = new List<TerrainMover>();
+        public static List<KinematicMovementSystem.CharacterMotor> CharacterMotors = new List<KinematicMovementSystem.CharacterMotor>();
+        public static List<KinematicMovementSystem.TerrainMover> PhysicsMovers = new List<KinematicMovementSystem.TerrainMover>();
 
         private static float _lastCustomInterpolationStartTime = -1f;
         private static float _lastCustomInterpolationDeltaTime = -1f;
