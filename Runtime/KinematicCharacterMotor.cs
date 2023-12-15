@@ -279,7 +279,7 @@ namespace KinematicMovementSystem
 	/// Component that manages character collisions and movement solving
 	/// </summary>
 	[RequireComponent(typeof(CapsuleCollider))]
-	[AddComponentMenu("Kinematic System/Kinematic Character Motor")]
+	[AddComponentMenu("Kinematic Movement System/Character Motor")]
 	//[HelpURL("https://www.youtube.com/watch?v=wZR-fQ0Nvq4&t=2316s")]
 	public class KinematicCharacterMotor : MonoBehaviour
 	{

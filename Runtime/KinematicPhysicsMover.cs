@@ -33,7 +33,7 @@ namespace KinematicMovementSystem
     /// proper interaction with characters
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
-	[AddComponentMenu("Kinematic System/Terrain Mover")]
+	[AddComponentMenu("Kinematic Movement System/Terrain Mover")]
 
 	public class KinematicPhysicsMover : MonoBehaviour
     {
