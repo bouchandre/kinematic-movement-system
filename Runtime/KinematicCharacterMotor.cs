@@ -36,7 +36,7 @@ namespace KinematicMovementSystem
 		/// <summary>
 		/// This is called when the motor's movement logic detects a hit
 		/// </summary>
-		void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
+		void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint)
 		{
 
 		}
@@ -281,7 +281,7 @@ namespace KinematicMovementSystem
 	[RequireComponent(typeof(CapsuleCollider))]
 	[AddComponentMenu("Kinematic System/Kinematic Character Motor")]
 	//[HelpURL("https://www.youtube.com/watch?v=wZR-fQ0Nvq4&t=2316s")]
-	public class CharacterMotor : MonoBehaviour
+	public class KinematicCharacterMotor : MonoBehaviour
 	{
 
 		#region properties
@@ -2279,7 +2279,7 @@ namespace KinematicMovementSystem
 						// -------------------------------------------------------
 						// CALL HERE
 						// -------------------------------------------------------
-						CharacterController.OnMovementHit(closestSweepHitCollider, closestSweepHitNormal, closestSweepHitPoint, ref moveHitStabilityReport);
+						CharacterController.OnMovementHit(closestSweepHitCollider, closestSweepHitNormal, closestSweepHitPoint);
 
 
 
@@ -2377,7 +2377,7 @@ namespace KinematicMovementSystem
 		{
 			if (_rigidbodyProjectionHitCount < _internalRigidbodyProjectionHits.Length)
 			{
-				if (!hitRigidbody.GetComponent<CharacterMotor>())
+				if (!hitRigidbody.GetComponent<KinematicCharacterMotor>())
 				{
 					RigidbodyProjectionHit rph = new RigidbodyProjectionHit();
 					rph.Rigidbody = hitRigidbody;
@@ -2532,7 +2532,7 @@ namespace KinematicMovementSystem
 						float characterMass = SimulatedCharacterMass;
 						Vector3 characterVelocity = bodyHit.HitVelocity;
 
-						CharacterMotor hitCharacterMotor = bodyHit.Rigidbody.GetComponent<CharacterMotor>();
+						KinematicCharacterMotor hitCharacterMotor = bodyHit.Rigidbody.GetComponent<KinematicCharacterMotor>();
 						bool hitBodyIsCharacter = hitCharacterMotor != null;
 						bool hitBodyIsDynamic = !bodyHit.Rigidbody.isKinematic;
 						float hitBodyMass = bodyHit.Rigidbody.mass;
@@ -2546,7 +2546,7 @@ namespace KinematicMovementSystem
 						}
 						else if (!hitBodyIsDynamic)
 						{
-							TerrainMover physicsMover = bodyHit.Rigidbody.GetComponent<TerrainMover>();
+							KinematicPhysicsMover physicsMover = bodyHit.Rigidbody.GetComponent<KinematicPhysicsMover>();
 							if(physicsMover)
 							{
 								hitBodyVelocity = physicsMover.Velocity;
@@ -2981,7 +2981,7 @@ namespace KinematicMovementSystem
 				angularVelocity = interactiveRigidbody.angularVelocity;
 				if(interactiveRigidbody.isKinematic)
 				{
-					TerrainMover physicsMover = interactiveRigidbody.GetComponent<TerrainMover>();
+					KinematicPhysicsMover physicsMover = interactiveRigidbody.GetComponent<KinematicPhysicsMover>();
 					if (physicsMover)
 					{
 						linearVelocity = physicsMover.Velocity;
@@ -3015,7 +3015,7 @@ namespace KinematicMovementSystem
 			Rigidbody colliderAttachedRigidbody = onCollider.attachedRigidbody;
 			if (colliderAttachedRigidbody)
 			{
-				if (colliderAttachedRigidbody.gameObject.GetComponent<TerrainMover>())
+				if (colliderAttachedRigidbody.gameObject.GetComponent<KinematicPhysicsMover>())
 				{
 					return colliderAttachedRigidbody;
 				}
@@ -3033,7 +3033,7 @@ namespace KinematicMovementSystem
 		[System.Serializable]
 		public struct CapsuleProperties
 		{
-			CharacterMotor _motor;
+			KinematicCharacterMotor _motor;
 
 			/// <summary>
 			/// The radius of the sphere, measured in the object's local space.
@@ -3139,7 +3139,7 @@ namespace KinematicMovementSystem
 
 
 
-			public CapsuleProperties(CharacterMotor motor)
+			public CapsuleProperties(KinematicCharacterMotor motor)
 			{
 				_motor = motor;
 

@@ -8,9 +8,9 @@ using KinematicMovementSystem;
 
 namespace KinematicMovementSystem.Editor
 {
-    [CustomEditor(typeof(CharacterMotor))]
+    [CustomEditor(typeof(KinematicCharacterMotor))]
 	[CanEditMultipleObjects]
-    public class CharacterMotorEditor : UnityEditor.Editor
+    public class KinematicCharacterMotorEditor : UnityEditor.Editor
     {
         protected virtual void OnSceneGUI()
         {            /*

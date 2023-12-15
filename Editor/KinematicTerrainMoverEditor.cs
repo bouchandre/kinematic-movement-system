@@ -7,13 +7,13 @@ using KinematicMovementSystem;
 namespace KinematicMovementSystem.Editor
 {
 
-	[CustomEditor(typeof(TerrainMover))]
+	[CustomEditor(typeof(KinematicPhysicsMover))]
 	[CanEditMultipleObjects]
 	public class TerrainMoverEditor : UnityEditor.Editor
 	{
 		public override void OnInspectorGUI()
 		{
-			TerrainMover physicsMover = (TerrainMover)target;
+			KinematicPhysicsMover physicsMover = (KinematicPhysicsMover)target;
 
 			serializedObject.Update();
 

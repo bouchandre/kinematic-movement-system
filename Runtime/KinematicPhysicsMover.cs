@@ -35,7 +35,7 @@ namespace KinematicMovementSystem
     [RequireComponent(typeof(Rigidbody))]
 	[AddComponentMenu("Kinematic System/Terrain Mover")]
 
-	public class TerrainMover : MonoBehaviour
+	public class KinematicPhysicsMover : MonoBehaviour
     {
         /// <summary>
         /// The mover's Rigidbody
