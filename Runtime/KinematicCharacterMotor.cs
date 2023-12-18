@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using KinematicMovementSystem.Utility;
 
 namespace KinematicMovementSystem
 {
@@ -101,6 +102,15 @@ namespace KinematicMovementSystem
 
 		public Vector3 Normal;
 		public Vector3 CapsuleNormal;
+
+		public float SlopeDirectionGlobal;
+		public float SlopeDirectionLocal;
+
+		public float SlopeAngleGlobal;
+		public float SlopeAngleForward;
+
+		
+
 
 		public Vector3 HitPoint;
 		public Collider HitCollider;
@@ -2020,6 +2030,8 @@ namespace KinematicMovementSystem
 
 
 
+					_groundProperties.CalculateSlopeValues(CharacterUp, CharacterRight, TransientRotation);
+
 
 					// Found stable ground
 					if (groundHitStabilityReport.IsStable)
@@ -2073,7 +2085,7 @@ namespace KinematicMovementSystem
 
 
 
-			Debug.DrawRay(Transform.position, _groundProperties.Normal * 4f, Color.red);
+
 
 
 		}
