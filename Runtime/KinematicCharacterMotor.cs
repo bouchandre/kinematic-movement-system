@@ -109,8 +109,6 @@ namespace KinematicMovementSystem
 		public float SlopeAngleGlobal;
 		public float SlopeAngleForward;
 
-		
-
 
 		public Vector3 HitPoint;
 		public Collider HitCollider;
