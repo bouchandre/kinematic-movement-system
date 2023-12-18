@@ -1,6 +1,6 @@
 {
     "name": "com.bouchandre.kinematic-movement-system",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "displayName": "Kinematic Movement System",
     "description": "Modified version of the KCC from Philippe St-Amand",
     "unity": "2010.4",
