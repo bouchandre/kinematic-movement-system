@@ -129,6 +129,8 @@ namespace KinematicMovementSystem
 		public Vector3 LateInput;
 		public Vector3 LateLocal;
 		public Vector3 LateGlobal;
+
+		public Vector3 EulerAngles;
 	}
 
 
@@ -733,7 +735,7 @@ namespace KinematicMovementSystem
 		{
 			ValidateData();
 		}
-		
+
 		private void Awake()
 		{
 			_transform = this.transform;
@@ -755,6 +757,9 @@ namespace KinematicMovementSystem
 			_capsuleProperties = new CapsuleProperties(this);
 
 			SetCapsuleDimensions(_capsuleRadius, _capsuleHeight, _capsuleYOffset);
+
+
+			_velocityReport.EulerAngles = Vector3.zero;
 		}
 
 		private void OnValidate()
@@ -1835,6 +1840,8 @@ namespace KinematicMovementSystem
 
 			_velocityReport.Global = (_transientPosition - _initialSimulationPosition) / deltaTime;
 			_velocityReport.Local = _baseVelocity;
+
+			_velocityReport.EulerAngles = (_transientRotation.eulerAngles - _initialSimulationRotation.eulerAngles) / deltaTime;
 
 
 		}
