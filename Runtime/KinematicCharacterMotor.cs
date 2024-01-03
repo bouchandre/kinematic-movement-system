@@ -109,6 +109,8 @@ namespace KinematicMovementSystem
 		public float SlopeAngleGlobal;
 		public float SlopeAngleForward;
 
+		public float SlopeIntensityGlobal => Mathf.Sin(Mathf.Deg2Rad * SlopeAngleGlobal);
+		public float SlopeIntensityForward => Mathf.Sin(Mathf.Deg2Rad * SlopeAngleForward);
 
 		public Vector3 HitPoint;
 		public Collider HitCollider;
@@ -940,12 +942,29 @@ namespace KinematicMovementSystem
 		/// Returns the direction adjusted to be tangent to a specified surface normal relatively to the character's up direction.
 		/// Useful for reorienting a direction on a slope without any lateral deviation in trajectory
 		/// </summary>
-		public Vector3 GetDirectionTangentToSurface(Vector3 direction, Vector3 surfaceNormal)
+		public Vector3 GetDirectionTangentToSurface(Vector3 direction, Vector3 surfaceNormal, bool preserveMagnitude = false)
 		{
 			Vector3 directionRight = Vector3.Cross(direction, _characterUp);
-			return Vector3.Cross(surfaceNormal, directionRight).normalized;
+			Vector3 result = Vector3.Cross(surfaceNormal, directionRight).normalized;
+
+			if(preserveMagnitude)
+			{
+				result *= direction.magnitude;
+			}
+
+
+			return result;
 		}
 		
+
+		public Vector3 GetDirectionTangentToSurface(Vector3 direction, bool preserveMagnitde = false)
+		{
+			return GetDirectionTangentToSurface(direction, Ground.Normal, preserveMagnitde);
+		}
+
+
+
+
 		public void SetTransientPosition(Vector3 newPos)
 		{
 			_transientPosition = newPos;
