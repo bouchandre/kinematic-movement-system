@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using KinematicMovementSystem.Utility;
+using UnityEngine.TextCore.Text;
 
 namespace KinematicMovementSystem
 {
@@ -2028,7 +2029,7 @@ namespace KinematicMovementSystem
 					groundingReport.GroundPoint = groundSweepHit.point;
 					groundingReport.SnappingPrevented = false;
 
-
+					_groundProperties.Normal = groundSweepHit.normal;
 
 					_groundProperties.FoundAnyGround = true;
 					_groundProperties.IsOnStep = groundHitStabilityReport.ValidStepDetected;
@@ -2081,6 +2082,8 @@ namespace KinematicMovementSystem
 						// CALL HERE
 						// -------------------------------------------------------
 						//CharacterController.OnGroundHit(groundSweepHit.collider, groundSweepHit.normal, groundSweepHit.point, ref groundHitStabilityReport);
+
+						Debug.Log(_groundProperties.SlopeAngleGlobal);
 
 						CharacterController.OnGroundHit(_groundProperties);
 

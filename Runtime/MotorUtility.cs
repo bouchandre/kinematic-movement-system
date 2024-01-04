@@ -23,7 +23,7 @@ namespace KinematicMovementSystem.Utility
 		}
 
 
-		public static void CalculateSlopeValues(this GroundReport report, Vector3 characterUp, Vector3 characterRight, Quaternion rotation)
+		public static void CalculateSlopeValues(ref this GroundReport report, Vector3 characterUp, Vector3 characterRight, Quaternion rotation)
 		{
 			report.SlopeAngleGlobal = Vector3.Angle(report.Normal, characterUp);
 			report.SlopeAngleForward = Vector3.Angle(-characterUp, Vector3.Cross(characterRight, report.Normal)) - 90;
