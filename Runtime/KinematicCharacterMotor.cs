@@ -1661,7 +1661,7 @@ namespace KinematicMovementSystem
 				#endregion
 			}
 
-			Debug.Log(_groundingStatus.GroundNormal + " and " + _groundProperties.CapsuleNormal);
+			//Debug.Log(_groundingStatus.GroundNormal + " and " + _groundProperties.CapsuleNormal);
 
 
 		}
