@@ -112,6 +112,8 @@ namespace KinematicMovementSystem
 		public float SlopeIntensityGlobal => Mathf.Sin(Mathf.Deg2Rad * SlopeAngleGlobal);
 		public float SlopeIntensityForward => Mathf.Sin(Mathf.Deg2Rad * SlopeAngleForward);
 
+		public bool IsFacingSlope => SlopeDirectionLocal <= 90f;
+
 		public Vector3 HitPoint;
 		public Collider HitCollider;
 
