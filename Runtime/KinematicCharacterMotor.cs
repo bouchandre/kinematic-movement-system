@@ -1005,6 +1005,7 @@ namespace KinematicMovementSystem
 				// On blocking hits, project the movement on the obstruction while following the grounding plane
 				else
 				{
+
 					Vector3 obstructionRightAlongGround = Vector3.Cross(obstructionNormal, _groundingStatus.GroundNormal).normalized;
 					Vector3 obstructionUpAlongGround = Vector3.Cross(obstructionRightAlongGround, obstructionNormal).normalized;
 					velocity = GetDirectionTangentToSurface(velocity, obstructionUpAlongGround) * velocity.magnitude;
@@ -1022,7 +1023,14 @@ namespace KinematicMovementSystem
 				// Handle generic obstruction
 				else
 				{
+					//float velocityY = velocity.y;
+
 					velocity = Vector3.ProjectOnPlane(velocity, obstructionNormal);
+
+					//float velocityMult = velocityY / velocity.y;
+
+
+					//if (obstructionNormal.y > 0f && velocityY < 0f) velocity *= velocityMult ;
 				}
 			}
 		}
@@ -1293,18 +1301,25 @@ namespace KinematicMovementSystem
 				RaycastHit hit = _internalCharacterHits[i];
 				float hitDistance = hit.distance;
 
-				// Find the closest valid hit
-				if (hitDistance > 0f && CheckIfColliderValidForCollisions(hit.collider))
-				{
-					if (hitDistance < closestDistance)
-					{
-						closestHit = hit;
-						closestHit.distance -= GroundProbingBackstepDistance;
-						closestDistance = hitDistance;
+				float hitAngle = Vector3.Angle(-direction, hit.normal);
 
-						foundValidHit = true;
+				if(hitAngle <= MaxStableDenivelationAngle)
+				{
+					// Find the closest valid hit
+					if (hitDistance > 0f && CheckIfColliderValidForCollisions(hit.collider))
+					{
+						if (hitDistance < closestDistance)
+						{
+							closestHit = hit;
+							closestHit.distance -= GroundProbingBackstepDistance;
+							closestDistance = hitDistance;
+
+							foundValidHit = true;
+						}
 					}
 				}
+
+
 			}
 
 			return foundValidHit;
@@ -1557,7 +1572,7 @@ namespace KinematicMovementSystem
 
 					ProbeGround(ref _transientPosition, _transientRotation, selectedGroundProbingDistance, ref _groundingStatus);
 
-					//Debug.Log(_groundingStatus.IsStableOnGround + " and " + _groundProperties.StableOnGround);
+					Debug.Log(_groundingStatus.GroundNormal);
 
 
 					if (!_lastGroundingStatus.IsStableOnGround && _groundingStatus.IsStableOnGround)
@@ -1891,6 +1906,8 @@ namespace KinematicMovementSystem
 			MaxStepHeight = Mathf.Clamp(MaxStepHeight, 0f, Mathf.Infinity);
 			MinRequiredStepDepth = Mathf.Clamp(MinRequiredStepDepth, 0f, _capsuleRadius);
 			MaxStableDistanceFromLedge = Mathf.Clamp(MaxStableDistanceFromLedge, 0f, _capsuleRadius);
+
+			MaxStableDenivelationAngle = Mathf.Clamp(MaxStableDenivelationAngle, MaxStableSlopeAngle, 200f);
 
 			transform.localScale = Vector3.one;
 
