@@ -2100,7 +2100,6 @@ namespace KinematicMovementSystem
 						// -------------------------------------------------------
 						//CharacterController.OnGroundHit(groundSweepHit.collider, groundSweepHit.normal, groundSweepHit.point, ref groundHitStabilityReport);
 
-						Debug.Log(_groundProperties.SlopeAngleGlobal);
 
 						CharacterController.OnGroundHit(_groundProperties);
 
@@ -2180,6 +2179,7 @@ namespace KinematicMovementSystem
 					bool stableOnHit = IsStableOnNormal(overlapNormal) && !MustUnground();
 					Vector3 velocityBeforeProjection = transientVelocity;
 					Vector3 obstructionNormal = GetObstructionNormal(overlapNormal, stableOnHit);
+
 
 					InternalHandleVelocityProjection(
 						stableOnHit,
@@ -3176,22 +3176,22 @@ namespace KinematicMovementSystem
 
 			Vector3 GetTopPoint()
 			{
-				return _motor.Transform.position + _motor.Transform.up * (Offset + (0.5f * Height) - Radius);
+				return _motor.TransientPosition + _motor.CharacterUp * (Offset + (0.5f * Height) - Radius);
 			}
 
 			Vector3 GetBottomPoint()
 			{
-				return _motor.Transform.position + _motor.Transform.up * (Offset - (0.5f * Height) - Radius);
+				return _motor.TransientPosition + _motor.CharacterUp * (Offset - (0.5f * Height) - Radius);
 			}
 
 			Vector3 GetTop()
 			{
-				return _motor.Transform.position + _motor.Transform.up * (Offset + (0.5f * Height));
+				return _motor.TransientPosition + _motor.CharacterUp * (Offset + (0.5f * Height));
 			}
 
 			Vector3 GetBottom()
 			{
-				return _motor.Transform.position + _motor.Transform.up * (Offset - (0.5f * Height));
+				return _motor.TransientPosition + _motor.CharacterUp * (Offset - (0.5f * Height));
 			}
 
 
