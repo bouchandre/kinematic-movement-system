@@ -2059,13 +2059,13 @@ namespace KinematicMovementSystem
 					_groundProperties.HitPoint = groundSweepHit.point;
 					_groundProperties.HitCollider = groundSweepHit.collider;
 
-					if(groundHitStabilityReport.FoundOuterNormal)
-					{
-						_groundProperties.Normal = groundHitStabilityReport.OuterNormal;
-					}
-					else if(groundHitStabilityReport.FoundInnerNormal)
+					if(groundHitStabilityReport.FoundInnerNormal)
 					{
 						_groundProperties.Normal = groundHitStabilityReport.InnerNormal;
+					}
+					else if(groundHitStabilityReport.FoundOuterNormal)
+					{
+						_groundProperties.Normal = groundHitStabilityReport.OuterNormal;
 					}
 					else
 					{
