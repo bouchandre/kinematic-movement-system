@@ -2053,11 +2053,26 @@ namespace KinematicMovementSystem
 					_groundProperties.IsOnLedge = groundHitStabilityReport.LedgeDetected;
 
 					_groundProperties.CapsuleNormal = groundSweepHit.normal;
+					_groundProperties.Normal = groundSweepHit.normal
+
 					_groundProperties.LedgeRightRirection = groundHitStabilityReport.LedgeRightDirection;
 					_groundProperties.LedgeFacingDirection = groundHitStabilityReport.LedgeFacingDirection;
 
 					_groundProperties.HitPoint = groundSweepHit.point;
 					_groundProperties.HitCollider = groundSweepHit.collider;
+
+					if(groundHitStabilityReport.LedgeDetected)
+					{
+						if (groundHitStabilityReport.FoundOuterNormal)
+						{
+							_groundProperties.Normal = groundHitStabilityReport.OuterNormal;
+						}
+						else if (groundHitStabilityReport.FoundInnerNormal)
+						{
+							_groundProperties.Normal = groundHitStabilityReport.InnerNormal;
+						}
+					}
+					/*
 
 					if(groundHitStabilityReport.FoundInnerNormal)
 					{
@@ -2071,7 +2086,7 @@ namespace KinematicMovementSystem
 					{
 						_groundProperties.Normal = groundSweepHit.normal;
 					}
-
+					*/
 
 
 					_groundProperties.CalculateSlopeValues(CharacterUp, CharacterRight, TransientRotation);
