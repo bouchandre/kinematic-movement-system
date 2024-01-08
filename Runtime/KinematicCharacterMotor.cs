@@ -3176,22 +3176,33 @@ namespace KinematicMovementSystem
 
 			Vector3 GetTopPoint()
 			{
-				return _motor.TransientPosition + _motor.CharacterUp * (Offset + (0.5f * Height) - Radius);
+				return _motor.TransientPosition + LocalTopHemi;
+
+				//return _motor.TransientPosition + _motor.CharacterUp * (Offset + (0.5f * Height) - Radius);
 			}
 
 			Vector3 GetBottomPoint()
 			{
-				return _motor.TransientPosition + _motor.CharacterUp * (Offset - (0.5f * Height) - Radius);
+				return _motor.TransientPosition + LocalBottomHemi;
+
+
+				//return _motor.TransientPosition + _motor.CharacterUp * (Offset - (0.5f * Height) - Radius);
 			}
 
 			Vector3 GetTop()
 			{
-				return _motor.TransientPosition + _motor.CharacterUp * (Offset + (0.5f * Height));
+				return _motor.TransientPosition + LocalTop;
+
+
+				//return _motor.TransientPosition + _motor.CharacterUp * (Offset + (0.5f * Height));
 			}
 
 			Vector3 GetBottom()
 			{
-				return _motor.TransientPosition + _motor.CharacterUp * (Offset - (0.5f * Height));
+				return _motor.TransientPosition + LocalBottom;
+
+
+				//return _motor.TransientPosition + _motor.CharacterUp * (Offset - (0.5f * Height));
 			}
 
 
