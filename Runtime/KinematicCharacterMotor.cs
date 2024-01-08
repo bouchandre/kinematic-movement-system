@@ -2053,7 +2053,7 @@ namespace KinematicMovementSystem
 					_groundProperties.IsOnLedge = groundHitStabilityReport.LedgeDetected;
 
 					_groundProperties.CapsuleNormal = groundSweepHit.normal;
-					_groundProperties.Normal = groundSweepHit.normal
+					_groundProperties.Normal = groundSweepHit.normal;
 
 					_groundProperties.LedgeRightRirection = groundHitStabilityReport.LedgeRightDirection;
 					_groundProperties.LedgeFacingDirection = groundHitStabilityReport.LedgeFacingDirection;
