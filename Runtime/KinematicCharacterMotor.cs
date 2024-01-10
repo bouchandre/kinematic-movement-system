@@ -1572,7 +1572,7 @@ namespace KinematicMovementSystem
 
 					ProbeGround(ref _transientPosition, _transientRotation, selectedGroundProbingDistance, ref _groundingStatus);
 
-					Debug.Log(_groundingStatus.GroundNormal);
+					//Debug.Log(_groundingStatus.GroundNormal);
 
 
 					if (!_lastGroundingStatus.IsStableOnGround && _groundingStatus.IsStableOnGround)
